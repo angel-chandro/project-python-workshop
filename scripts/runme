@@ -1,0 +1,5 @@
+#! /usr/bin/env python3
+
+from mymodule import sky_sim
+
+sky_sim.main()
