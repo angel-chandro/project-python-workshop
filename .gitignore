@@ -1,0 +1,3 @@
+mymodule.egg-info/*
+catalog.csv
+*.pyc
