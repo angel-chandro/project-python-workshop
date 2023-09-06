@@ -35,7 +35,7 @@ def get_radec():
     return ra,dec
 
 
-def make_positions(ra, dec, nsrc):
+def make_positions(ra, dec, nsrc=NSRC):
     """
     Generate NSRC stars within 1 degree of the given ra/dec
 
