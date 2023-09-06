@@ -1,5 +1,5 @@
 mymodule.egg-info/*
-catalog.csv
+*.csv
 *.pyc
 .coverage
 coverage/*
