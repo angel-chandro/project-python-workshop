@@ -5,3 +5,4 @@ mymodule.egg-info/*
 coverage/*
 *.html
 *.json
+catalog*
