@@ -1,0 +1,5 @@
+mymodule.egg-info/*
+*.csv
+*.pyc
+.coverage
+coverage/*
