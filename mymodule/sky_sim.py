@@ -5,6 +5,7 @@ from math import cos,pi
 from random import uniform
 import argparse
 import logging
+import numpy as np
 
 # configure logging (in global scope)
 logging.basicConfig(format="%(asctime)s, %(name)s:%(levelname)s %(message)s", level=logging.DEBUG)
@@ -64,11 +65,13 @@ def make_positions(ra, dec, nsrc=NSRC):
     log.debug('Entering make_positions')
 
     # make 1000 stars within 1 degree of Andromeda
-    ras = []
-    decs = []
-    for i in range(nsrc):
-        ras.append(ra + uniform(-1,1))
-        decs.append(dec + uniform(-1,1))
+    ras = np.random.uniform(ra-1,ra+1,nsrc)
+    decs = np.random.uniform(dec-1,dec+1,nsrc)
+    #ras = []
+    #decs = []
+    #for i in range(nsrc):
+    #    ras.append(ra + uniform(-1,1))
+    #    decs.append(dec + uniform(-1,1))
     # apply a filter
     ras,decs = crop_to_circle(ras,decs,ra,dec,1)
     log.debug(f'Exiting make_positions with {ra}, {dec}, {nsrc}') 
@@ -94,22 +97,29 @@ def crop_to_circle(ras, decs, ref_ra, ref_dec, radius):
     """
     log.debug('Entering crop_to_circle')
 
-    ra_out = []
-    dec_out = []
-    for i in range(len(ras)):
-        if (ras[i]-ref_ra)**2 + (decs[i]-ref_dec)**2 < radius**2:
-            ra_out.append(ras[i])
-            dec_out.append(ras[i])
+    #ra_out = []
+    #dec_out = []
+    distance = np.hypot(ras-ref_ra, decs-ref_dec)
+    mask = np.where(distance<=radius)
+
+    #for i in range(len(ras)):
+    #    if (ras[i]-ref_ra)**2 + (decs[i]-ref_dec)**2 < radius**2:
+    #        ra_out.append(ras[i])
+    #        dec_out.append(ras[i])
     log.debug('Exiting crop_to_circle') 
-    return ra_out, dec_out
+    return ras[mask], decs[mask]
 
 def save_positions(ras, decs, out='catalog.csv'):
 
     # now write these to a csv file for use by my other program
+    #stacked = np.stack((ras,decs),axis=-1)
+    #stacked.dump(out)
     with open(out,'w',encoding='utf8') as f:
         print("id,ra,dec",file=f)
+        #np.savetxt(f,np.stack((ras,decs),axis=-1),delimiter=",")
         for i in range(len(ras)):
-            print(f"{i:07d}, {ras[i]:12f}, {decs[i]:12f}",file=f)
+            record = f"{i:07d}, {ras[i]:12f}, {decs[i]:12f}"
+            print(record,file=f)
     log.info(f'Writing file {out}') 
 
 
