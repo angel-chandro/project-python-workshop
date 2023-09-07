@@ -3,3 +3,5 @@ mymodule.egg-info/*
 *.pyc
 .coverage
 coverage/*
+*.html
+*.json
